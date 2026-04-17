@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/seed.mjs)",
+      "Bash(node -e ' *)",
+      "Bash(node scripts/check-db.mjs)",
+      "Bash(npm run *)"
+    ]
+  }
+}
