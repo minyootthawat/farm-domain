@@ -140,7 +140,7 @@ function isDuplicateKeyError(error: unknown) {
 export async function readStore(userProfile?: string | null): Promise<StoreData> {
   const { servers, domains } = await getCollections();
   const serverFilter = userProfile ? { profileName: userProfile } : {};
-  const domainFilter = userProfile ? { ownerProfile: userProfile } : {};
+  const domainFilter = userProfile ? { ownerProfile: { $in: [userProfile as string, null] } } : {};
   const [serverRows, domainRows] = await Promise.all([
     servers.find(serverFilter, { sort: { profileName: 1, name: 1 } }).toArray(),
     domains.find(domainFilter, { sort: { updatedAt: -1 } }).toArray(),
@@ -524,7 +524,7 @@ export async function updateDomainById(
 ) {
   const data = parseDomainUpdateInput(input);
   const { domains } = await getCollections();
-  const filter = userProfile ? { id, ownerProfile: userProfile } : { id };
+  const filter = userProfile ? { id, ownerProfile: { $in: [userProfile as string, null] } } : { id };
   const result = await domains.updateOne(
     filter,
     { $set: { ...data, updatedAt: new Date() } },
@@ -535,7 +535,7 @@ export async function updateDomainById(
 
 export async function deleteDomainById(id: string, userProfile?: string | null) {
   const { domains } = await getCollections();
-  const filter = userProfile ? { id, ownerProfile: userProfile } : { id };
+  const filter = userProfile ? { id, ownerProfile: { $in: [userProfile as string, null] } } : { id };
   const result = await domains.deleteOne(filter);
   return result.deletedCount > 0;
 }

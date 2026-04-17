@@ -9,7 +9,8 @@
     "lint": "eslint",
     "db:up": "docker compose up -d mongodb",
     "db:down": "docker compose down",
-    "db:check": "node scripts/check-db.mjs"
+    "db:check": "node scripts/check-db.mjs",
+    "db:seed": "node scripts/seed.mjs"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.1",
